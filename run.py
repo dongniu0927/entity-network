@@ -61,12 +61,12 @@ def main(_):
 
         # Initialize all Variables
         if os.path.exists(ckpt_dir + "checkpoint"):
-            print 'Restoring Variables from Checkpoint!'
+            print('Restoring Variables from Checkpoint!')
             saver.restore(sess, tf.train.latest_checkpoint(ckpt_dir))
             with open(ckpt_dir + "training_logs.pik", 'r') as f:
                 train_loss, train_acc, val_loss, val_acc = pickle.load(f)
         else:
-            print 'Initializing Variables!'
+            print('Initializing Variables!')
             sess.run(tf.global_variables_initializer())
             train_loss, train_acc, val_loss, val_acc = {}, {}, {}, {}
         
@@ -85,8 +85,8 @@ def main(_):
                                                              entity_net.A: trainA[start:end]})
                 loss, acc, counter = loss + curr_loss, acc + curr_acc, counter + 1
                 if counter % 100 == 0:
-                    print "Epoch %d\tBatch %d\tTrain Loss: %.3f\tTrain Accuracy: %.3f" % (epoch, 
-                        counter, loss / float(counter), acc / float(counter))
+                    print("Epoch %d\tBatch %d\tTrain Loss: %.3f\tTrain Accuracy: %.3f" % (epoch,
+                        counter, loss / float(counter), acc / float(counter)))
             
             # Add train loss, train acc to data
             train_loss[epoch], train_acc[epoch] = loss / float(counter), acc / float(counter)
@@ -97,7 +97,7 @@ def main(_):
             # Validate every so often
             if epoch % FLAGS.validate_every == 0:
                 val_loss_val, val_acc_val = do_eval(val_n, bsz, sess, entity_net, valS, valS_len, valQ, valA)
-                print "Epoch %d Validation Loss: %.3f\tValidation Accuracy: %.3f" % (epoch, val_loss_val, val_acc_val)
+                print("Epoch %d Validation Loss: %.3f\tValidation Accuracy: %.3f" % (epoch, val_loss_val, val_acc_val))
                 
                 # Add val loss, val acc to data 
                 val_loss[epoch], val_acc[epoch] = val_loss_val, val_acc_val
@@ -119,7 +119,7 @@ def main(_):
         test_loss, test_acc = do_eval(test_n, bsz, sess, entity_net, testS, testS_len, testQ, testA)
         
         # Print and Write Test Loss/Accuracy
-        print "Test Loss: %.3f\tTest Accuracy: %.3f" % (test_loss, test_acc)
+        print("Test Loss: %.3f\tTest Accuracy: %.3f" % (test_loss, test_acc))
         with open(ckpt_dir + "output.txt", 'w') as g:
             g.write("Test Loss: %.3f\tTest Accuracy: %.3f\n" % (test_loss, test_acc))
 
