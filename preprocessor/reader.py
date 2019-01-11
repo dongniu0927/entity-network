@@ -19,7 +19,7 @@ def parse(data_path, task_id, word2id=None, bsz=32):
     for data_type in DATA_TYPES:
         cache_path = data_path + "-pik/" + FORMAT_STR % task_id + data_type + ".pik"
         if os.path.exists(cache_path):
-            with open(cache_path, 'r') as f:
+            with open(cache_path, 'rb') as f:
                 vectorized_data.append(pickle.load(f))
         else:
             [filename] = filter(lambda x: FORMAT_STR % task_id in x and data_type in x, os.listdir(data_path))

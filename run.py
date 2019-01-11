@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 run.py
 
@@ -63,8 +64,8 @@ def main(_):
         if os.path.exists(ckpt_dir + "checkpoint"):
             print('Restoring Variables from Checkpoint!')
             saver.restore(sess, tf.train.latest_checkpoint(ckpt_dir))
-            with open(ckpt_dir + "training_logs.pik", 'r') as f:
-                train_loss, train_acc, val_loss, val_acc = pickle.load(f)
+            with open(ckpt_dir + "training_logs.pik", 'rb') as f:
+                train_loss, train_acc, val_loss, val_acc = pickle.load(f, encoding='iso-8859-1')
         else:
             print('Initializing Variables!')
             sess.run(tf.global_variables_initializer())
@@ -108,7 +109,7 @@ def main(_):
 
                 # Save Model
                 saver.save(sess, ckpt_dir + "model.ckpt", global_step=entity_net.epoch_step)
-                with open(ckpt_dir + "training_logs.pik", 'w') as f:
+                with open(ckpt_dir + "training_logs.pik", 'wb') as f:
                     pickle.dump((train_loss, train_acc, val_loss, val_acc), f)
 
                 # Early Stopping Condition
